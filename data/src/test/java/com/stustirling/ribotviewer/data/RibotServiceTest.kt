@@ -73,6 +73,7 @@ class RibotServiceTest {
     }
 
     private fun assertFirstRibot(firstRibot: ApiRibot) {
+        Assert.assertEquals("d712923e-62a1-11e5-9d70-feff819cdc9f",firstRibot.profile.id)
         Assert.assertEquals("https://s3-eu-west-1.amazonaws.com/api.ribot.io/trevor_big.png",firstRibot.profile.avatar)
         Assert.assertEquals("trevor@ribot.co.uk",firstRibot.profile.email)
         Assert.assertEquals("#B60042",firstRibot.profile.color)

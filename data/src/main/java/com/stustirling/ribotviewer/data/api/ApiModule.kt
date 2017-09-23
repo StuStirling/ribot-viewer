@@ -3,9 +3,11 @@ package com.stustirling.ribotviewer.data.api
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
@@ -39,16 +41,18 @@ class ApiModule {
 
 }
 
-class GsonConverterFactoryProvider {
+class GsonConverterFactoryProvider @Inject constructor() {
     fun build() : GsonConverterFactory {
         return GsonConverterFactory.create()
     }
 }
 
-class RetrofitProvider(val baseUrl: String,
+class RetrofitProvider (val baseUrl: String,
                        val gsonConverterFactory: GsonConverterFactory) {
     fun build() : Retrofit{
         val client = OkHttpClient.Builder()
+                .addInterceptor(HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY })
                 .build()
 
         return Retrofit.Builder()

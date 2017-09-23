@@ -8,6 +8,7 @@ import java.util.*
  */
 data class ApiRibot(@SerializedName("profile")val profile : ApiRibotProfile) {
     data class ApiRibotProfile(
+            @SerializedName("id") val id: String,
             @SerializedName("name") val name: ApiRibotName,
             @SerializedName("email") val email: String,
             @SerializedName("hexColor") val color: String,
