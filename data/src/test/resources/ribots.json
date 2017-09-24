@@ -1,0 +1,32 @@
+[
+  {
+    "profile": {
+      "id": "d712923e-62a1-11e5-9d70-feff819cdc9f",
+      "email": "trevor@ribot.co.uk",
+      "avatar": "https://s3-eu-west-1.amazonaws.com/api.ribot.io/trevor_big.png",
+      "dateOfBirth": "1990-01-01T00:00:00.000Z",
+      "hexColor": "#B60042",
+      "bio": "Trevor crafts elegant multi-device experiences with pixels and magic while tanked up on artisan coffee and Col-Erase pencil shaving fumes. He can also be found going on about Disneyland (again), playing video games terribly, or drawing a face on something.",
+      "isActive": true,
+      "name": {
+        "first": "Trevor",
+        "last": "May"
+      }
+    }
+  },
+  {
+    "profile": {
+      "id": "c6c4a200-62a1-11e5-9d70-feff819cdc9f",
+      "email": "lindsay@ribot.co.uk",
+      "avatar": "https://s3-eu-west-1.amazonaws.com/api.ribot.io/lindsay_big.png",
+      "dateOfBirth": "1990-01-01T00:00:00.000Z",
+      "hexColor": "#ecc973",
+      "bio": "With a passion for people at her core, Lindsay rides around on her Vespa, organising, solving and fixing everything in her path, whilst singing about it all in sweet Motown style - she's in a cool band, y'know. Lindsay's driven by a need to help make the lives of others as easy as possible — no matter the task! L to the I-N-D-S-A-Y! Go Lindsay!! *CLAP*-*CLAP* *CLAP* Go Lindsay!!",
+      "isActive": true,
+      "name": {
+        "first": "Lindsay",
+        "last": "Scott"
+      }
+    }
+  }
+]

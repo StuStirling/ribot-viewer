@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="25dp"
+    tools:background="@color/colorPrimary"
+    android:id="@+id/cl_alc_container">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/civ_alc_avatar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintDimensionRatio="H, 1:1"
+        tools:src="@drawable/ribot_logo" />
+
+    <TextView
+        android:id="@+id/tv_alc_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/civ_alc_avatar"
+        app:layout_constraintStart_toStartOf="@+id/civ_alc_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/civ_alc_avatar"
+        tools:text="Stu Stirling" />
+
+
+</android.support.constraint.ConstraintLayout>
