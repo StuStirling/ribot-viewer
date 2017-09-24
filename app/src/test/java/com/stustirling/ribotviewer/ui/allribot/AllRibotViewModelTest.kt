@@ -1,4 +1,4 @@
-package com.stustirling.ribotviewer.allribot
+package com.stustirling.ribotviewer.ui.allribot
 
 import com.nhaarman.mockito_kotlin.whenever
 import com.stustirling.ribotviewer.domain.Resource

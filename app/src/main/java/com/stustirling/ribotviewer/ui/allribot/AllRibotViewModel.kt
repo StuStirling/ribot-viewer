@@ -1,10 +1,11 @@
-package com.stustirling.ribotviewer.allribot
+package com.stustirling.ribotviewer.ui.allribot
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.stustirling.ribotviewer.BaseViewModel
 import com.stustirling.ribotviewer.domain.RibotRepository
-import com.stustirling.ribotviewer.domain.model.Ribot
+import com.stustirling.ribotviewer.model.RibotModel
+import com.stustirling.ribotviewer.model.toRibotModel
 import com.stustirling.ribotviewer.shared.extensions.onlyResourceError
 import com.stustirling.ribotviewer.shared.extensions.onlyResourceSuccess
 import com.stustirling.ribotviewer.shared.extensions.toUnit
@@ -20,7 +21,7 @@ import javax.inject.Inject
 class AllRibotViewModel(val ribotRepository: RibotRepository) : BaseViewModel() {
 
 
-    private var ribotsRetrievalSuccessful: ConnectableFlowable<List<Ribot>>
+    private var ribotsRetrievalSuccessful: ConnectableFlowable<List<RibotModel>>
 
     private var ribotsRetrievalFailed: ConnectableFlowable<Unit>
 
@@ -31,6 +32,7 @@ class AllRibotViewModel(val ribotRepository: RibotRepository) : BaseViewModel() 
 
         ribotsRetrievalSuccessful = initialConnectableRepoCall
                 .onlyResourceSuccess()
+                .map { it.map { it.toRibotModel() } }
                 .replay(1)
 
         ribotsRetrievalFailed = initialConnectableRepoCall
@@ -45,7 +47,7 @@ class AllRibotViewModel(val ribotRepository: RibotRepository) : BaseViewModel() 
             )
     }
 
-    fun getRibotRetrievedSuccessfully() : Flowable<List<Ribot>> {
+    fun getRibotRetrievedSuccessfully() : Flowable<List<RibotModel>> {
         return ribotsRetrievalSuccessful
     }
 

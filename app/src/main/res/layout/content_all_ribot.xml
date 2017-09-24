@@ -7,7 +7,8 @@
     android:padding="16dp"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="25dp"
-    tools:background="@color/colorPrimary">
+    tools:background="@color/colorPrimary"
+    android:id="@+id/cl_alc_container">
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/civ_alc_avatar"
@@ -19,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintDimensionRatio="H, 1:1"
-        tools:src="@drawable/ribot_logo"/>
+        tools:src="@drawable/ribot_logo" />
 
     <TextView
         android:id="@+id/tv_alc_name"
