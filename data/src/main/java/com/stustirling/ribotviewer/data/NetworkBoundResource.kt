@@ -1,5 +1,6 @@
 package com.stustirling.ribotviewer.data
 
+import com.stustirling.ribotviewer.domain.RefreshTrigger
 import com.stustirling.ribotviewer.domain.Resource
 import io.reactivex.Flowable
 import io.reactivex.FlowableEmitter
@@ -11,7 +12,8 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by Stu Stirling on 23/09/2017.
  */
-abstract class NetworkBoundResource<LocalType, RemoteType, DomainType>(val emitter: FlowableEmitter<Resource<DomainType>>) {
+abstract class NetworkBoundResource<LocalType, RemoteType, DomainType>(private val emitter: FlowableEmitter<Resource<DomainType>>,
+                                                                       private val refreshTrigger: RefreshTrigger?) {
     init {
         create()
     }
@@ -19,6 +21,10 @@ abstract class NetworkBoundResource<LocalType, RemoteType, DomainType>(val emitt
     private var firstRetrievalDisposable: Disposable? = null
 
     private fun create() {
+        refreshTrigger?.refresh = {
+            refreshRemote()
+            refreshTrigger?.enabled = false }
+
         emitter.onNext(Resource.loading())
 
         firstRetrievalDisposable = getLocal()
@@ -35,8 +41,10 @@ abstract class NetworkBoundResource<LocalType, RemoteType, DomainType>(val emitt
                     firstRetrievalDisposable?.dispose()
                     saveCallResult(localType)
                     getLocal()
+                    refreshTrigger?.enabled = true
                 },{throwable ->
                     emitter.onNext(Resource.error(throwable))
+                    refreshTrigger?.enabled = true
                 })
     }
 

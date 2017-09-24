@@ -4,6 +4,7 @@ import com.stustirling.ribotviewer.data.api.RibotService
 import com.stustirling.ribotviewer.data.api.model.ApiRibot
 import com.stustirling.ribotviewer.data.local.dao.RibotDao
 import com.stustirling.ribotviewer.data.local.model.LocalRibot
+import com.stustirling.ribotviewer.domain.RefreshTrigger
 import com.stustirling.ribotviewer.domain.Resource
 import com.stustirling.ribotviewer.domain.RibotRepository
 import com.stustirling.ribotviewer.domain.model.Ribot
@@ -20,8 +21,8 @@ import javax.inject.Inject
 class RibotRepositoryImpl @Inject constructor(
         val ribotService: RibotService,
         val ribotDao: RibotDao ) : RibotRepository {
-    override fun getRibots(): Flowable<Resource<List<Ribot>>> {
-        return Flowable.create({emitter -> object:  NetworkBoundResource<List<LocalRibot>,List<ApiRibot>,List<Ribot>>(emitter) {
+    override fun getRibots(refreshTrigger: RefreshTrigger?): Flowable<Resource<List<Ribot>>> {
+        return Flowable.create({emitter -> object:  NetworkBoundResource<List<LocalRibot>,List<ApiRibot>,List<Ribot>>(emitter,refreshTrigger) {
             override fun saveCallResult(item: List<LocalRibot>) = ribotDao.insertAll(item)
 
             override fun loadFromDb(): Flowable<List<LocalRibot>> =

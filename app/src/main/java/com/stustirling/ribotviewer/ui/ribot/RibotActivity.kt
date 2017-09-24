@@ -20,6 +20,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class RibotActivity : BaseActivity() {
+    companion object {
+        const val RIBOT = "ribot"
+    }
 
     @SuppressLint("SimpleDateFormat")
     private val dateFormatter = SimpleDateFormat("dd/MM/yyyy").apply {
@@ -30,14 +33,18 @@ class RibotActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupView()
+
+        val ribot = intent.getParcelableExtra<RibotModel>(RIBOT)
+        setupWithRibot(ribot)
+    }
+
+    private fun setupView() {
         supportPostponeEnterTransition()
 
         setSupportActionBar(tb_rb_toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        val ribot = intent.getParcelableExtra<RibotModel>("ribot")
-        setupWithRibot(ribot)
     }
 
     private fun setupWithRibot(ribotModel: RibotModel) {
@@ -56,15 +63,13 @@ class RibotActivity : BaseActivity() {
 
         val placeholder = getDrawable(R.drawable.small_ribot_logo).apply {
             mutate()
-            DrawableCompat.setTint(this,color)
-        }
+            DrawableCompat.setTint(this,color) }
 
         Glide.with(this)
                 .load(ribotModel.avatar)
                 .apply(RequestOptions.fitCenterTransform()
                         .placeholder(placeholder))
                 .into(iv_ra_avatar)
-
 
         fab_ra_email.setOnClickListener {
             val emailIntent = Intent(Intent.ACTION_SENDTO)
