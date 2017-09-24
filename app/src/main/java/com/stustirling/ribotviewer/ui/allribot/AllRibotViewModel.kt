@@ -1,5 +1,6 @@
 package com.stustirling.ribotviewer.ui.allribot
 
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.stustirling.ribotviewer.BaseViewModel
@@ -10,9 +11,7 @@ import com.stustirling.ribotviewer.model.toRibotModel
 import com.stustirling.ribotviewer.shared.extensions.onlyResourceError
 import com.stustirling.ribotviewer.shared.extensions.onlyResourceLoading
 import com.stustirling.ribotviewer.shared.extensions.onlyResourceSuccess
-import com.stustirling.ribotviewer.shared.extensions.toUnit
-import io.reactivex.Flowable
-import io.reactivex.flowables.ConnectableFlowable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -22,34 +21,41 @@ import javax.inject.Inject
 
 class AllRibotViewModel(ribotRepository: RibotRepository) : BaseViewModel() {
 
-
-    val ribotsRetrievalSuccessful: ConnectableFlowable<List<RibotModel>>
-    val ribotsRetrievalFailed: ConnectableFlowable<Unit>
     private val networkRefresh = RefreshTrigger()
-    val ribotsLoading: Flowable<Unit>
+
+    val ribots = MutableLiveData<List<RibotModel>>()
+    val retrievalError = MutableLiveData<Throwable>()
+    val loading = MutableLiveData<Boolean>().apply {value = false }
 
     init {
         val connectableRepoCall = ribotRepository.getRibots(networkRefresh)
                 .subscribeOn(Schedulers.io())
                 .publish()
 
-        ribotsRetrievalSuccessful = connectableRepoCall
+        val success = connectableRepoCall
                 .onlyResourceSuccess()
                 .map { it.map { it.toRibotModel() } }
-                .replay(1)
+                .observeOn(AndroidSchedulers.mainThread())
 
-        ribotsRetrievalFailed = connectableRepoCall
+        val error = connectableRepoCall
                 .onlyResourceError()
-                .toUnit()
-                .replay(1)
+                .map { it.second }
+                .observeOn(AndroidSchedulers.mainThread())
 
-        ribotsLoading = connectableRepoCall
+        val loadingFlowable = connectableRepoCall
                 .onlyResourceLoading()
-                .toUnit()
+                .observeOn(AndroidSchedulers.mainThread())
 
         compositeDisposable.addAll(
-                ribotsRetrievalFailed.connect(),
-                ribotsRetrievalSuccessful.connect(),
+                error.subscribe {
+                    retrievalError.value = it
+                    loading.value = false
+                },
+                success.subscribe {
+                    retrievalError.value = null
+                    ribots.value = it
+                    loading.value = false},
+                loadingFlowable.subscribe { loading.value = true },
                 connectableRepoCall.connect()
             )
     }

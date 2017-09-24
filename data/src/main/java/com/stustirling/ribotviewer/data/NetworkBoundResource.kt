@@ -18,7 +18,7 @@ abstract class NetworkBoundResource<LocalType, RemoteType, DomainType>(private v
         create()
     }
 
-    private var firstRetrievalDisposable: Disposable? = null
+    private var currentLocalDataDisposable: Disposable? = null
 
     private fun create() {
         refreshTrigger?.refresh = {
@@ -27,7 +27,7 @@ abstract class NetworkBoundResource<LocalType, RemoteType, DomainType>(private v
 
         emitter.onNext(Resource.loading())
 
-        firstRetrievalDisposable = getLocal()
+        currentLocalDataDisposable = getLocal()
 
         refreshRemote()
     }
@@ -38,9 +38,9 @@ abstract class NetworkBoundResource<LocalType, RemoteType, DomainType>(private v
                 .subscribeOn(Schedulers.io())
                 .map (mapToLocal())
                 .subscribe({ localType ->
-                    firstRetrievalDisposable?.dispose()
+                    currentLocalDataDisposable?.dispose()
                     saveCallResult(localType)
-                    getLocal()
+                    currentLocalDataDisposable = getLocal()
                     refreshTrigger?.enabled = true
                 },{throwable ->
                     emitter.onNext(Resource.error(throwable))

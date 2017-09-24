@@ -1,5 +1,6 @@
 package com.stustirling.ribotviewer.ui.allribot
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -13,7 +14,6 @@ import com.stustirling.ribotviewer.model.RibotModel
 import com.stustirling.ribotviewer.shared.di.AppComponent
 import com.stustirling.ribotviewer.shared.di.scopes.ActivityScope
 import com.stustirling.ribotviewer.ui.ribot.RibotActivity
-import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_allribot.*
 import javax.inject.Inject
 
@@ -64,24 +64,25 @@ class AllRibotActivity : BaseActivity() {
 
     private fun bindViewModel() {
         viewModel.apply {
-            ribotsLoading
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        if( !srl_ara_refresh.isRefreshing ) srl_ara_refresh.isRefreshing = true }
-            ribotsRetrievalSuccessful
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { updateRibots(it)
-                        srl_ara_refresh.isEnabled = true
-                        srl_ara_refresh.isRefreshing = false }
-            ribotsRetrievalFailed
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        srl_ara_refresh.isEnabled = true
-                        Toast.makeText(this@AllRibotActivity,
-                                "Something went wrong. Please try again.",
-                                Toast.LENGTH_SHORT).show()
-                        srl_ara_refresh.isRefreshing = false
-                    }
+            loading.observe(this@AllRibotActivity, Observer {
+                srl_ara_refresh.isRefreshing = (it == true
+                        && !srl_ara_refresh.isRefreshing)
+            })
+
+            ribots.observe(this@AllRibotActivity, Observer<List<RibotModel>> {
+                it?.let {
+                    updateRibots(it)
+                    srl_ara_refresh.isEnabled = true
+                }
+            })
+            retrievalError.observe(this@AllRibotActivity, Observer {
+                it?.let {
+                    srl_ara_refresh.isEnabled = true
+                    Toast.makeText(this@AllRibotActivity,
+                            "Something went wrong. Please try again.",
+                            Toast.LENGTH_SHORT).show()
+                }
+            })
         }
     }
 
