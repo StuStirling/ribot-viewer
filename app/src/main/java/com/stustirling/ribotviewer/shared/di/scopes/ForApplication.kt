@@ -1,4 +1,4 @@
-package com.stustirling.ribotviewer.di.scopes
+package com.stustirling.ribotviewer.shared.di.scopes
 
 /**
  * Created by Stu Stirling on 23/09/2017.

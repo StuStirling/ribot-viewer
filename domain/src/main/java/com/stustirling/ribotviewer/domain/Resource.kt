@@ -32,4 +32,8 @@ class Resource<out T> private constructor(val status: Status, val data: T?, val 
     enum class Status {
         SUCCESS,ERROR,LOADING
     }
+
+    override fun toString(): String {
+        return "$status ${throwable?.localizedMessage}: $data "
+    }
 }

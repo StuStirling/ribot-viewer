@@ -1,4 +1,4 @@
-package com.stustirling.ribotviewer.di
+package com.stustirling.ribotviewer.shared.di
 
 import android.content.Context
 import com.stustirling.ribotviewer.data.RibotRepositoryImpl
@@ -6,7 +6,7 @@ import com.stustirling.ribotviewer.data.api.ApiModule
 import com.stustirling.ribotviewer.data.api.RibotService
 import com.stustirling.ribotviewer.data.local.LocalDataModule
 import com.stustirling.ribotviewer.data.local.dao.RibotDao
-import com.stustirling.ribotviewer.di.scopes.ForApplication
+import com.stustirling.ribotviewer.shared.di.scopes.ForApplication
 import com.stustirling.ribotviewer.domain.RibotRepository
 import dagger.Module
 import dagger.Provides

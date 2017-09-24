@@ -1,4 +1,4 @@
-package com.stustirling.ribotviewer.di.scopes
+package com.stustirling.ribotviewer.shared.di.scopes
 
 import javax.inject.Scope
 
