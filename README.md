@@ -1,4 +1,4 @@
-#Ribot Viewer
+# Ribot Viewer
 
 This project is a chance for me to try out a lot of new things as well as going back to basics regarding
 clean architecture. It has been written in Kotlin.
@@ -33,7 +33,7 @@ Google IO so thought I would give it a try and see how it worked.
 Tweaks were made to use RxJava and obviously to be written in Kotlin, and some modifications based 
 on use case such as the refresh trigger (the end result I am not entirely happy with).
 
-To begin with, the ViewModel was going to be connected to the Activity by subscribing the the ViewModel's
+To begin with, the `ViewModel` was going to be connected to the `Activity` by subscribing the the `ViewModel`'s
 flowables & observables. However, this soon became messy and it was not functioning as expected. This
  could have been due to my understanding of RxJava but once I could test again, it became apparent that
  the cleaner and more testable solution I could implement was to use a combination of RxJava and LiveData.
